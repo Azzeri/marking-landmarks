@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CommentController;
 use App\Http\Controllers\LandmarkUserController;
 use Illuminate\Support\Facades\Route;
 
@@ -20,3 +21,6 @@ Route::get('/', function () {
 
 Route::get('/landmark/{lat}/{lng}', [LandmarkUserController::class, 'getLandmarkData']);
 Route::post('/landmark/updateProperty', [LandmarkUserController::class, 'updateProperty']);
+
+Route::get('/getCommentsForLandmark/{landmarkId}', [CommentController::class, 'getCommentsForLandmark']);
+Route::post('/landmark/addComment', [CommentController::class, 'addComment']);
