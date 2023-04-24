@@ -3,6 +3,8 @@
 namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+
+use App\Models\LandmarkUser;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -12,11 +14,19 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // \App\Models\User::factory(10)->create();
+        LandmarkUser::create([
+            'id_user' => 1,
+            'id_landmark' => 207279185,
+            'is_favourite' => 1,
+            'status' => 'to_see',
+        ]);
 
-        // \App\Models\User::factory()->create([
-        //     'name' => 'Test User',
-        //     'email' => 'test@example.com',
-        // ]);
+        LandmarkUser::create([
+            'id_user' => 1,
+            'id_landmark' => 207279186,
+            'is_favourite' => 1,
+            'status' => 'seen',
+            'mark' => 3
+        ]);
     }
 }

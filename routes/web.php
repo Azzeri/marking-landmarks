@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\LandmarkUserController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -14,5 +15,8 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    echo ('Oznaczanie miejsc');
 });
+
+Route::get('/landmark/{lat}/{lng}', [LandmarkUserController::class, 'getLandmarkData']);
+Route::post('/landmark/updateProperty', [LandmarkUserController::class, 'updateProperty']);
