@@ -10,8 +10,9 @@ class LandmarkUserController extends Controller
 {
     public function getLandmarkData(Request $request)
     {
-        $lat = 51.5182503350964;
-        $lng = -0.030778508268127783;
+        $lat = $request->latitude;
+        $lng = $request->longitude;
+
         $idUser = 1;
 
         $openMapData = Http::get(
@@ -23,16 +24,48 @@ class LandmarkUserController extends Controller
             '
         )->json();
 
+        $response = [
+            'OM' => $openMapData,
+            'display_name' => $openMapData['display_name'] ?: null,
+        ];
+
         $lm = LandmarkUser::where('id_user', $idUser)
             ->where('id_landmark', $openMapData['place_id'])
             ->first();
 
-        return response()->json([
-            'display_name' => $openMapData['display_name'] ?: null,
-            'is_favourite' => $lm ? $lm->is_favourite : null,
-            'status' => $lm ? $lm->status : null,
-            'mark' => $lm ? $lm->mark : null,
-        ]);
+        if ($lm) {
+            $response[] = [
+                'is_favourite' => $lm ? $lm->is_favourite : null,
+                'status' => $lm ? $lm->status : null,
+                'mark' => $lm ? $lm->mark : null,
+            ];
+        }
+
+        return response()->json($response);
+    }
+
+    public function getAllLandmarks()
+    {
+        $landmarks = LandmarkUser::select('id_landmark')->distinct()->get();
+
+        $result = [];
+        foreach ($landmarks as $lm) {
+            $omData = Http::get(
+                'https://nominatim.openstreetmap.org/details?place_id='
+                    . $lm->id_landmark
+                    . '&format=json'
+            )->json();
+
+            $result[] = [
+                'place_id' => $lm->id_landmark,
+                'coordinates' => [
+                    'lat' => $omData['centroid']['coordinates'][0],
+                    'lng' => $omData['centroid']['coordinates'][1]
+                ]
+            ];
+        }
+
+        return response()->json($result);
     }
 
     public function updateProperty(Request $request)
