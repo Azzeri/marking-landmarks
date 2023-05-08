@@ -10,8 +10,8 @@ class LandmarkUserController extends Controller
 {
     public function getLandmarkData(Request $request)
     {
-        $lat = $request->latitude;
-        $lng = $request->longitude;
+        $lat = $request->lat;
+        $lng = $request->lng;
 
         $idUser = 1;
 
@@ -25,7 +25,6 @@ class LandmarkUserController extends Controller
         )->json();
 
         $response = [
-            'OM' => $openMapData,
             'display_name' => $openMapData['display_name'] ?: null,
         ];
 
