@@ -25,6 +25,8 @@ class LandmarkUserController extends Controller
         )->json();
 
         $response = [
+            'place_id' => $openMapData['place_id'],
+            'osm_id' => $openMapData['osm_id'],
             'display_name' => $openMapData['display_name'] ?: null,
         ];
 
@@ -58,8 +60,8 @@ class LandmarkUserController extends Controller
             $result[] = [
                 'place_id' => $lm->id_landmark,
                 'coordinates' => [
-                    'lat' => $omData['centroid']['coordinates'][0],
-                    'lng' => $omData['centroid']['coordinates'][1]
+                    'lng' => $omData['centroid']['coordinates'][0],
+                    'lat' => $omData['centroid']['coordinates'][1]
                 ]
             ];
         }
