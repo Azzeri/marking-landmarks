@@ -69,6 +69,37 @@ class LandmarkUserController extends Controller
         return response()->json($result);
     }
 
+    public function getAllLandmarksForUser(Request $request)
+    {
+        $landmarks = LandmarkUser::where('id_user', $request->id_user)
+            ->distinct('id_landmark')
+            ->get();
+
+        $result = [];
+        foreach ($landmarks as $lm) {
+            $omData = Http::get(
+                'https://nominatim.openstreetmap.org/details?place_id='
+                    . $lm->id_landmark
+                    . '&format=json'
+            )->json();
+
+            $result[] = [
+                'id_user' => $request->id_user,
+                'is_favourite' => $lm->is_favourite,
+                'status' => $lm->status,
+                'mark' => $lm->mark,
+                'display_name' => $omData['localname'],
+                'place_id' => $omData['place_id'],
+                'osm_id' => $omData['osm_id'],
+                'openMapData' => $omData,
+            ];
+        }
+
+        dd($result);
+
+        return response()->json($result);
+    }
+
     public function updateProperty(Request $request)
     {
         $property = $request->property;
@@ -85,8 +116,6 @@ class LandmarkUserController extends Controller
             $property => $value
         ]);
 
-        return response()->json([
-            'status' => 'success'
-        ]);
+        return response()->json($lm);
     }
 }
