@@ -23,6 +23,7 @@ Route::get('/landmark/{lat}/{lng}', [LandmarkUserController::class, 'getLandmark
 Route::post('/landmark/updateProperty', [LandmarkUserController::class, 'updateProperty']);
 Route::get('/getAllLandmarks', [LandmarkUserController::class, 'getAllLandmarks']);
 Route::get('/getAllLandmarksForUser/{id_user}', [LandmarkUserController::class, 'getAllLandmarksForUser']);
+Route::delete('/deleteLandmark/{landmarkId}', [LandmarkUserController::class, 'delete']);
 
 Route::get('/getCommentsForLandmark/{landmarkId}', [CommentController::class, 'getCommentsForLandmark']);
 Route::post('/landmark/addComment', [CommentController::class, 'addComment']);

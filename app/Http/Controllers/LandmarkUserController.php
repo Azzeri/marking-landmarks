@@ -118,4 +118,13 @@ class LandmarkUserController extends Controller
 
         return response()->json($lm);
     }
+
+    public function delete(Request $request)
+    {
+        $landmarkUser = LandmarkUser::where('id_landmark', $request->landmarkId)->first();
+        $landmarkUser->delete();
+        return response()->json([
+            'status' => 'success'
+        ]);
+    }
 }
