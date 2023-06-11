@@ -95,8 +95,6 @@ class LandmarkUserController extends Controller
             ];
         }
 
-        dd($result);
-
         return response()->json($result);
     }
 
